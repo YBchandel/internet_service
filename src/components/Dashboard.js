@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap";
+import { Button, Col, Container, Form, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap";
 import EmployeeRow from "./EmployeeRow";
 import base_url from '../api/API'
 import axios from "axios";
@@ -54,8 +54,10 @@ const Dashboard = () => {
       console.error(error);
     }
   };
+
+
   return (
-<div className="container">
+<div class="table table-bordered mb-4" >
   <div className="d-flex justify-content-end mb-3">
         <Input
           type="text"
@@ -64,12 +66,14 @@ const Dashboard = () => {
           onChange={handleSearch}
           className="w-25"
         />
-        <Button onClick={handleSearch}>Search</Button>
+        {/* <Button onClick={handleSearch}>Search</Button> */}
   </div>
-      <Table className="table table-hover">
+
+      <Table >
         <thead>
           <tr>
-            <th scope="col">Employee Id</th>
+          <th scope="col"> Id</th>
+            <th scope="col">Employee_Id</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Email</th>
@@ -137,6 +141,7 @@ const Dashboard = () => {
           </Button>
         </ModalFooter>
       </Modal>
+      
 </div>
   
   );

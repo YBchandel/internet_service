@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import base_url from "../api/API";
+import { useNavigate } from "react-router-dom";
 
 
 const AdminLogin = () => {
@@ -10,6 +11,7 @@ const AdminLogin = () => {
         admin_Id: '',
         decryptedPassword:''
     });
+    const navigate = useNavigate();
 
     const handleForm = (e) => {
       e.preventDefault();
@@ -24,6 +26,9 @@ const AdminLogin = () => {
         (response) => {
           console.log(response);
           toast.success("Login successfully!")
+          if (response) {
+            navigate('/dashboard')
+          }
         },
         (error) => {
           console.log(error);

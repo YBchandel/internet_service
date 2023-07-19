@@ -1,2 +1,2 @@
-const base_url = "https://localhost:7223/api";
+const base_url = "https://localhost:7006/api";
 export default base_url;
