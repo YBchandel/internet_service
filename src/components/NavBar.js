@@ -1,13 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Container } from 'reactstrap'
+import { Container, Nav, Navbar} from 'reactstrap'
 import GetStatus from './GetStatus'
 
-const Nav = () => {
+
+const NavBar = () => {
   return (
     <div>
       <Container>
-        <nav class="navbar navbar-light bg-light justify-content-end">
+        <Navbar>
+        <Nav class="navbar navbar-light bg-light justify-content-end">
           <GetStatus />
         <Link
           to={`/admin-login`}
@@ -17,10 +19,12 @@ const Nav = () => {
           Admin Logn
         </Link>
 
-      </nav>
+      </Nav>
+     
+      </Navbar>
       </Container>
     </div>
   )
 }
 
-export default Nav
+export default NavBar

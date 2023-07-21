@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import base_url from "../api/API";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,23 +15,79 @@ import {
   FormGroup,
   Input,
   Label,
+  Nav,
+  Navbar,
   Row,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 //import { toast } from "react-toastify";
 //import { Link } from "react-router-dom";
 
 const Register = () => {
   const [employee, setEmployee] = useState({});
   const [data, setData] = useState([]);
-  const [empId,setEmpId] = useState('');
+  const [emp_Id, setEmpId] = useState('');
   const [showResults, setShowResults] = useState(false)
+  //----------------------------------------------phone validation not used
+  // const [phoneNumber, setPhoneNumber] = useState('');
+  // const handleChange = (event) => {
+  //   const { value } = event.target;
+  //   // Use a regular expression to allow only digits and limit the length to 10 digits
+  //   const formattedPhoneNumber = value.replace(/\D/g, '').slice(0, 10);
+  //   setPhoneNumber(formattedPhoneNumber);
+  // }
+  const handleEmployeeIdChange = (e) => {
+
+    const empIdValue = e.target.value;
+    const numericEmpId = empIdValue.replace(/\D/g, "");
+    if (numericEmpId.length <= 8) {
+      setEmployee({ ...employee, emp_Id: numericEmpId });
+    }
+  };
+
+
+
+  const handlePhoneChange = (e) => {
+
+    const phoneValue = e.target.value;
+
+    const numericPhone = phoneValue.replace(/\D/g, "");
+
+    if (numericPhone.length <= 10) {
+
+      setEmployee({ ...employee, phone: numericPhone });
+
+    }
+
+  };
+  //------------------------------------------------------------
+
 
   const handleForm = (e) => {
     e.preventDefault();
-    console.log(employee);
-    const count = postDataOnServer(employee);
-    if (count != null) {
-      setEmployee({});
+
+    if (employee.phone.length !== 10) {
+
+      toast.error("Phone number must be 10")
+
+    }
+
+    if (employee.emp_Id.length !== 8) {
+
+      toast.error("Enter 8 digit Employee Id")
+
+    }
+
+    if (employee.phone.length == 10 && employee.emp_Id.length == 8) {
+
+      const count = postDataOnServer(employee);
+
+      if (count != null) {
+
+        setEmployee({});
+
+      }
+
     }
   };
   // console.log(employee);
@@ -43,25 +99,92 @@ const Register = () => {
       },
       (error) => {
         console.log(error);
-        toast.error("Something Went Wrong");
+        if (employee.phone.length !== 10) {
+          toast.error("Number Must be 10 Degit !");
+        }
       }
     );
   };
 
 
   const fetchData = async () => {
-      try {
-        const response = await axios.get(`${base_url}/Employee/${empId}`);
-        setData(response.data);
-        console.log(response.data);
-        setShowResults(true)
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      const response = await axios.get(`${base_url}/Employee/${emp_Id}`);
+      setData(response.data);
+      console.log(response.data);
+      setShowResults(true)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
+
+  // const loginValidation = values => {
+  //   const errors = {}
+  //   if (!values.phone) {
+  //     errors.email = 'Required'
+  //   } else if (![0-9] {10}$.test(values.phone)) {
+  //     errors.email = 'Invalid email address'
+  //   }
+  //   return errors
+  // }
+  //---------------------------------------date format
+  const [formattedRequestDate, setFormattedRequestDate] = useState("");
+  const [formattedApprovalDate, setFormattedApprovalDate] = useState("");
+
+  useEffect(() => {
+    if (data) {
+      const formattedRequest = formatDate(data.requested_date);
+      setFormattedRequestDate(formattedRequest);
+
+      const formattedApproval = formatDate(data.action_date);
+      setFormattedApprovalDate(formattedApproval);
+    }
+  }, [data]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      return "Please Wait !!"; // Or any other meaningful default value you prefer
+    }
+
+    const dateObj = new Date(dateString);
+    if (isNaN(dateObj.getTime())) {
+      return "Invalid Date"; // Handle invalid date strings, if necessary
+    }
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
     };
-      
+    const formattedDate = dateObj.toLocaleString(undefined, options);
+    return formattedDate;
+    //----------------------------------------------------
+  }
+
   return (
     <>
+      <Container>
+        <Navbar>
+          <Nav class="navbar navbar-light bg-light justify-content-end">
+
+            <Link
+              to={`/admin-login`}
+              class="btn btn-outline-success me-2"
+              type="button"
+            >
+              Admin Login
+            </Link>
+
+          </Nav>
+
+        </Navbar>
+      </Container>
+
       <div>
         <Container>
           <Row xs="2">
@@ -97,11 +220,8 @@ const Register = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label hidden>Employee Id</Label>
-                  <Input
-                    name="Employee Id"
-                    onChange={(e) => {
-                      setEmployee({ ...employee, emp_Id: e.target.value });
-                    }}
+                  <Input name="Employee Id"
+                    onChange={handleEmployeeIdChange}
                     value={employee.emp_Id}
                     required
                     placeholder="Employee Id"
@@ -113,13 +233,14 @@ const Register = () => {
 
                   <Input
                     name="Phone"
-                    onChange={(e) => {
-                      setEmployee({ ...employee, phone: e.target.value });
-                    }}
+                    onChange={handlePhoneChange}
                     value={employee.phone}
                     required
                     placeholder="Phone"
                     type="number"
+
+
+
                   />
                 </FormGroup>
                 <FormGroup>
@@ -162,46 +283,56 @@ const Register = () => {
                   />
                 </FormGroup>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit"
+
+
+
+                >Submit</Button>
               </Form>
             </Col>
 
             <Col sm="4">
               <Container>
-              <div className="d-flex justify-content-end mb-3 mt-2">
-        <Input
-          type="text"
-          placeholder="Check Status"
-          onChange={(e)=>{setEmpId(e.target.value)}}
-          className="w-30 me-2"
-        />
-        <Button onClick={fetchData} >Search</Button>
-        </div>
-        { showResults ? 
-                <div >
-                  <Card
-                    className="my-2"
-                    color="primary"
-                    outline
-                    style={{
-                      width: "18rem",
-                    }}
-                  >
-                    <CardHeader tag="h5">Employee Status</CardHeader>
-                    <CardBody>
-                      <CardText>Employee Id : {empId}</CardText>
-                      <CardText>First Name : {data.first_Name}</CardText>
-                      <CardText>Last Name : {data.last_Name}</CardText>
-                      <CardText>Status : {data.status}</CardText>
-                      <CardText>
-                        Requested Date : {data.requested_Date}
-                      </CardText>
-                      <CardText>Approval Date : {data.approval_Date}</CardText>
-                      <CardText>Remark : {data.remark}</CardText>
-                    </CardBody>
-                  </Card>
+                <div className="d-flex justify-content-end mb-3 mt-2">
+                  <Input
+                    type="text"
+                    placeholder="Check Status"
+                    onChange={(e) => { setEmpId(e.target.value.replace(/\D/g, '').slice(0,8)) }}
+                    className="w-30 me-2"
+                  />
+                  <Button onClick={fetchData} >Search</Button>
                 </div>
-                 : null }
+                {showResults ?
+                  <div >
+                    <Card
+                      className="my-2 "
+                      color="primary"
+                      outline
+                      style={{
+                        width: "18rem",
+                      }}
+                    >
+                      <CardHeader tag="h5">Employee Status
+                        <a class="btn btn-primary btn-close " href="/" role="button" style={{ marginLeft: '29%' }}></a></CardHeader>
+
+                      {/* <Link class="btn-close" to={'/'}  role="button" disabled aria-label="Close"></Link> */}
+                      {/* <button type="button" class="btn-close" aria-label="Close"></button> */}
+
+
+                      <CardBody>
+                        <CardText>Employee Id : {data.emp_Id}</CardText>
+                        <CardText>First Name : {data.first_name}</CardText>
+                        <CardText>Last Name : {data.last_name}</CardText>
+                        <CardText>Status : {data.status}</CardText>
+                        <CardText>
+                          Requested Date : {formattedRequestDate}
+                        </CardText>
+                        <CardText>Approval Date : {formattedApprovalDate}</CardText>
+                        <CardText>Remark : {data.remark}</CardText>
+                      </CardBody>
+                    </Card>
+                  </div>
+                  : null}
               </Container>
             </Col>
           </Row>
