@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-// import { Button, Dropdown } from "reactstrap";
+import { Button } from "reactstrap";
 
 const EmployeeRow = ({ emp, onUpdate }) => {
-  // const [formattedRequestDate, setFormattedRequestDate] = useState("");
-  // const [formattedApprovalDate, setFormattedApprovalDate] = useState("");
+  const [formattedRequestDate, setFormattedRequestDate] = useState("");
+  const [formattedApprovalDate, setFormattedApprovalDate] = useState("");
 
-  // useEffect(() => {
-  //   if (emp) {
-  //     const formattedRequest = formatDate(emp.requested_date);
-  //     setFormattedRequestDate(formattedRequest);
+  useEffect(() => {
+    if (emp) {
+      const formattedRequest = formatDate(emp.requested_Date);
+      setFormattedRequestDate(formattedRequest);
 
-  //     const formattedApproval = formatDate(emp.action_date);
-  //     setFormattedApprovalDate(formattedApproval);
-  //   }
-    
-  // }, [emp]);
+      const formattedApproval = formatDate(emp.approval_Date);
+      setFormattedApprovalDate(formattedApproval);
+    }
+  }, [emp]);
 
   // const formatDate = (dateString) => {
   //   const dateObj = new Date(dateString);
@@ -41,16 +40,18 @@ const EmployeeRow = ({ emp, onUpdate }) => {
       <td>{emp.phone}</td>
       <td>{emp.department}</td>
       <td>{emp.position}</td>
-       <td>{emp.status}</td> 
-
-
-
-      <td>{emp.requested_date}</td>
-      <td>{emp.action_date}</td>
+      <td>{emp.status}</td>
+      <td>{formattedRequestDate}</td>
+      <td>{formattedApprovalDate}</td>
       <td>{emp.remark}</td>
       <td>
-        {/* <button type="button" class="btn btn-warning" onClick={() => onUpdate(emp.id)}>Update</button> */}
-        <button type="button" class="btn btn-outline-danger"onClick={() => onUpdate(emp.id)}>Update</button>
+        <Button
+         
+          className="btn btn-primary"
+          onClick={() => onUpdate(emp.id)}
+        >
+          Update
+        </Button>
       </td>
     </tr>
   );
