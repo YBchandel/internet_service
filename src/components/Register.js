@@ -45,6 +45,16 @@ const Register = () => {
     }
   };
 
+  // const handleEmployeeIdSearch = (e) => {
+
+  //   const empIdValue = e.target.value;
+  //   const numericEmpId = empIdValue.replace(/\D/g, "");
+  //   if (numericEmpId.length <= 8) {
+  //     setEmpId({ ...emp_Id, emp_Id: numericEmpId });
+  //   }
+  // };
+
+
 
 
   const handlePhoneChange = (e) => {
@@ -297,7 +307,7 @@ const Register = () => {
                   <Input
                     type="text"
                     placeholder="Check Status"
-                    onChange={(e) => { setEmpId(e.target.value.replace(/\D/g, '').slice(0,8)) }}
+                    onChange={(e) => { setEmpId(e.target.value) }}
                     className="w-30 me-2"
                   />
                   <Button onClick={fetchData} >Search</Button>
@@ -327,7 +337,22 @@ const Register = () => {
                         <CardText>
                           Requested Date : {formattedRequestDate}
                         </CardText>
-                        <CardText>Approval Date : {formattedApprovalDate}</CardText>
+                        {data.status === "Rejected" ? (
+
+                          <CardText>Rejected Date: {formattedApprovalDate}</CardText>
+
+                        ) : (
+
+                          formattedApprovalDate !== null && formattedApprovalDate !== " " && (
+
+                            <CardText>Approval Date: {formattedApprovalDate}</CardText>
+
+                          )
+
+                        )}
+
+
+                        {/* <CardText>Approval Date : {formattedApprovalDate}</CardText> */}
                         <CardText>Remark : {data.remark}</CardText>
                       </CardBody>
                     </Card>

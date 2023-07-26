@@ -2,7 +2,7 @@
   import axios from 'axios';
   import React, { useRef, useState } from 'react'
 
-  import { Button, Col, Form, FormGroup, Input, Row } from "reactstrap";
+  import { Button, Col, Container, Form, FormGroup, Input, Row } from "reactstrap";
   import base_url from '../api/API';
   import { toast } from 'react-toastify';
 
@@ -10,86 +10,109 @@
   import { ComponentToPrint } from './ComponentToPrint';
   import { useReactToPrint } from 'react-to-print';
   import { Link } from 'react-router-dom';
+import { ComponentToShow } from './ComponentToShow';
 
   // import { ComponentToPrint } from './ComponentToPrint';
 
 
   const AdminLogin = () => {
-      const [isLoggedin, setIsLoggedin] = useState(false);
+    const [isPrintClicked, setPrintClicked] = useState(false);
 
-      const [admin, setAdmin] = useState({
-    
-        admin_Id: '',
-    
-        decryptedPassword: ''
-    
-      });
-    
-    
-    
-    
-      const logout = () => {
-    
-        localStorage.removeItem('token-info');
-    
-        setIsLoggedin(false);
-    
-      };
-    
-    
-    
-    
-    
-      const handleForm = (e) => {
-    
-        e.preventDefault();
-    
-        const count = postDataOnServer(admin);
-    
-        if (count != null) {
-    
-          setAdmin({})
-    
-        }
-    
-      };
-      
-    
-      // console.log(employee);
-    
-      const postDataOnServer = (data) => {
-    
-        axios.post(`${base_url}/Admin/login`, data).then(
-    
-          (response) => {
-    
-            console.log(response);
-    
-            toast.success("Login successfully!")
-    
-            localStorage.setItem('token-info', JSON.stringify(admin));
-    
-            setIsLoggedin(true)
-    
-          },
-    
-          (error) => {
-    
-            console.log(error);
-    
-            toast.error("Invalid Credintials")
-    
-          }
-    
-        );
-    
-      };
-      //-----------------------------------------
-      
-        const componentRef = useRef();
-        const handlePrint = useReactToPrint({
-          content: () => componentRef.current,
-        });
+    const [isLoggedin, setIsLoggedin] = useState(false);
+  
+    const [admin, setAdmin] = useState({
+  
+      admin_Id: '',
+  
+      decryptedPassword:''
+  
+  });
+  
+  
+  
+  
+  const logout = () => {
+  
+    localStorage.removeItem('token-info');
+  
+    setIsLoggedin(false);
+  
+  };
+  
+  
+  
+  
+  const handleDownload =()=>{
+  
+    setPrintClicked(true);
+  
+  }
+  
+  const changeView =()=>{
+  
+    setPrintClicked(false);
+  
+   
+  
+  }
+  
+  
+  
+  
+  const handleForm = (e) => {
+  
+    e.preventDefault();
+  
+  const count = postDataOnServer(admin);
+  
+  if(count != null){
+  
+    setAdmin({})
+  
+  }
+  
+  };
+  
+  // console.log(employee);
+  
+  const postDataOnServer = (data) => {
+  
+    axios.post(`${base_url}/Admin/login`, data).then(
+  
+      (response) => {
+  
+        console.log(response);
+  
+        toast.success("Login successfully!")
+  
+        localStorage.setItem('token-info', JSON.stringify(admin));
+  
+        setIsLoggedin(true)  
+  
+      },
+  
+      (error) => {
+  
+        console.log(error);
+  
+        toast.error("Invalid Credintials")
+  
+      }
+  
+    );
+  
+  };
+  
+  
+  
+  
+   const componentRef = useRef();
+  
+   const handlePrint = useReactToPrint({
+  
+     content: () => componentRef.current,
+  
+   });
     
     return (
       <div>
@@ -193,10 +216,32 @@
           </Link>
           <button type="button" class="btn btn-outline-secondary me-2"  onClickCapture={logout}>Logout</button>
           
-          <button class="btn btn-outline-secondary" onClick={handlePrint}>Print</button>
-        <ComponentToPrint ref={componentRef} />
-            </div>
-            
+          
+                {isPrintClicked?(<button  class="btn btn-outline-secondary me-3 " onClick={handlePrint}>Download</button>):null}
+
+                {!isPrintClicked? ( <button class="btn btn-outline-secondary me-3 " onClick={handleDownload} style={{marginRight:'4%'}} >Print Preview</button>):null}
+
+               {isPrintClicked? (<button class="btn btn-outline-secondary me-3 " onClick={changeView} >Dashboard</button>):null}
+
+               
+
+               
+
+             
+
+                
+
+           
+
+              {isPrintClicked ? (<ComponentToPrint ref={componentRef}  />  )
+
+              :(<ComponentToShow ref={componentRef}/>)}                
+
+              
+
+</div>
+
+               
           
             {/* <button onClickCapture={logout}>logout user</button> */}
           
