@@ -178,11 +178,14 @@ const Register = () => {
 
   return (
     <>
+    
+
+{/* //***************************************************************************/ }
       <Container>
         <Navbar>
           <Nav class="navbar navbar-light bg-light justify-content-end">
 
-            <Link
+            <Link 
               to={`/admin-login`}
               class="btn btn-outline-success me-2"
               type="button"
@@ -190,20 +193,27 @@ const Register = () => {
               Admin Login
             </Link>
 
-          </Nav>
+            <h2 class=" justify-content-center" style={{position: "absolute",marginLeft :'37%' }} >Register Employee</h2>
+           
 
+
+          </Nav>
+          
         </Navbar>
       </Container>
-
-      <div>
+      
+{/* //********************************************************Register*******************/ }
+      <div class="" style={{marginRight:'5%', marginLeft:'5%',marginBottom: '2%'}}>
+        
         <Container>
+          
           <Row xs="2">
             <Col sm="4" xs="6"></Col>
 
-            <Col className="" sm="4" xs="6" style={{ marginTop: "7%" }}>
+            <Col className="shadow-lg p-3 mb-5 bg-white rounded" sm="4" xs="6" style={{ marginTop: "1%" }}>
               <Form onSubmit={handleForm}>
                 <FormGroup>
-                  <Label hidden>First Name</Label>
+                  <Label >First Name</Label>
                   <Input
                     name="First Name"
                     onChange={(e) => {
@@ -214,9 +224,8 @@ const Register = () => {
                     placeholder="First Name"
                     type="text"
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label hidden> Last Name</Label>
+                
+                  <Label > Last Name</Label>
                   <Input
                     name=" Last Name"
                     onChange={(e) => {
@@ -227,9 +236,8 @@ const Register = () => {
                     placeholder=" Last Name"
                     type="text"
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label hidden>Employee Id</Label>
+                
+                  <Label >Employee Id</Label>
                   <Input name="Employee Id"
                     onChange={handleEmployeeIdChange}
                     value={employee.emp_Id}
@@ -237,9 +245,8 @@ const Register = () => {
                     placeholder="Employee Id"
                     type="text"
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label hidden>Phone</Label>
+                
+                  <Label >Phone</Label>
 
                   <Input
                     name="Phone"
@@ -252,9 +259,8 @@ const Register = () => {
 
 
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label hidden>Email Id</Label>
+                
+                  <Label >Email Id</Label>
                   <Input
                     name="Email Id"
                     onChange={(e) => {
@@ -265,9 +271,8 @@ const Register = () => {
                     placeholder="Email Id"
                     type="email"
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label hidden>Department</Label>
+                
+                  <Label >Department</Label>
                   <Input
                     name="Department"
                     onChange={(e) => {
@@ -278,9 +283,8 @@ const Register = () => {
                     placeholder="Department"
                     type="text"
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label hidden> Position</Label>
+                
+                  <Label > Position</Label>
                   <Input
                     name=" Position"
                     onChange={(e) => {
@@ -298,12 +302,14 @@ const Register = () => {
 
 
                 >Submit</Button>
+                
               </Form>
             </Col>
 
+{/* //********************************************************Search By ID*******************/ }
             <Col sm="4">
               <Container>
-                <div className="d-flex justify-content-end mb-3 mt-2">
+                <div className="d-flex justify-content-end mb-3 mt-2" style={{}}>
                   <Input
                     type="text"
                     placeholder="Check Status"
@@ -328,7 +334,7 @@ const Register = () => {
                       {/* <Link class="btn-close" to={'/'}  role="button" disabled aria-label="Close"></Link> */}
                       {/* <button type="button" class="btn-close" aria-label="Close"></button> */}
 
-
+                    
                       <CardBody>
                         <CardText>Employee Id : {data.emp_Id}</CardText>
                         <CardText>First Name : {data.first_name}</CardText>
@@ -355,6 +361,7 @@ const Register = () => {
                         {/* <CardText>Approval Date : {formattedApprovalDate}</CardText> */}
                         <CardText>Remark : {data.remark}</CardText>
                       </CardBody>
+                      
                     </Card>
                   </div>
                   : null}

@@ -129,9 +129,9 @@ import { ComponentToShow } from './ComponentToShow';
       
                 <Col sm="4" xs="6"></Col>
       
-                <Col className=" pt-3 pb-2 " style={{ marginTop: "10%" }} sm="4" xs="6">
+                <Col className=" pt-3 pb-2 shadow-lg p-3 mb-5 bg-white rounded " style={{ marginTop: "10%" }} sm="4" xs="6">
       
-                  <Form onSubmit={handleForm}>
+                  <Form onSubmit={handleForm} >
                   <h2>Admin Login</h2>
       
                     <FormGroup>
